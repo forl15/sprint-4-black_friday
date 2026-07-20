@@ -12,9 +12,6 @@ docker compose exec shard1 mongosh --port 27018 --eval 'rs.initiate({_id: "shard
 echo "Initializing Shard 2..."
 docker compose exec shard2 mongosh --port 27019 --eval 'rs.initiate({_id: "shard2", members: [{_id: 0, host: "shard2:27019"}]})'
 
-# Ожидание инициализации реплика-сетов
-sleep 10
-
 # Добавление шардов в кластер через mongos_router
 echo "Adding shards to the cluster..."
 docker compose exec mongos_router mongosh --port 27020 --eval 'sh.addShard("shard1/shard1:27018"); sh.addShard("shard2/shard2:27019")'
