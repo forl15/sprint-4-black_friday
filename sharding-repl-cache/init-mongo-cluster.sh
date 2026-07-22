@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Инициализация Config Server
 echo "Initializing Config Server..."
 docker compose exec configSrv mongosh --port 27017 --eval 'rs.initiate({_id: "config_server", configsvr: true, members: [{_id: 0, host: "configSrv:27017"}]})'
 
-# Инициализация Shard 1
 echo "Initializing Shard 1..."
 docker compose exec -T shard1_1 mongosh --port 27018 <<EOF
 rs.initiate({_id: "shard1",
@@ -15,7 +13,6 @@ members: [
 ]})
 EOF
 
-# Инициализация Shard 2
 echo "Initializing Shard 2..."
 docker compose exec -T shard2_1 mongosh --port 27019 <<EOF
 rs.initiate({_id: "shard2",
@@ -28,7 +25,6 @@ EOF
 
 sleep 10
 
-# Добавление шардов в кластер через mongos_router
 echo "Adding shards to the cluster..."
 docker compose exec -T mongos_router mongosh --port 27020 <<EOF
 sh.addShard("shard1/shard1_1:27018,shard1_2:27021,shard1_3:27023")
