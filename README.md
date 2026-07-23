@@ -15,3 +15,7 @@ docker compose up -d
 ```shell
 ./init-mongo-cluster.sh
 ```
+
+4. Файл со схемой приложения
+
+[Схема приложения](diagrams/task6.drawio)
